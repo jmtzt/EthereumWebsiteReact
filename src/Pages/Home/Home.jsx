@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Search from "../Search/Search";
 import "./styles.css";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
@@ -178,6 +179,7 @@ function Home() {
             </form>
           </div>
         </div>
+        <Search />
       </div>
     </>
   );
