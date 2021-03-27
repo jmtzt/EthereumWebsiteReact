@@ -8,30 +8,41 @@ import "./styles.css";
 
 function Search() {
   const [cryptoNames, setCryptoNames] = useState([]);
+  const [crypto, setCrypto] = useState(null);
+  const [coinPrices, setCoinPrices] = useState(null);
 
   useEffect(() => {
     const getCryptoNames = async () => {
       const response = await axios.get(
         "https://api.coingecko.com/api/v3/coins/list?include_platform=false"
       );
-      console.log("Making get request");
+      // Removendo variacoes das cryptos que nao comecam com Ethereum
       setCryptoNames(
         response.data
-          .map((crypto) => crypto.name + " - " + crypto.symbol.toUpperCase())
-          .filter(
-            (name) =>
-              !name.startsWith("0.5X") &&
-              !name.startsWith("1X") &&
-              !name.startsWith("2X") &&
-              !name.startsWith("3X")
-          )
+          .map((c) => {
+            return {
+              name: c.symbol.toUpperCase() + " " + c.name,
+              id: c.id,
+            };
+          })
+          .filter((c) => c.name.split(" ")[1].startsWith("Ethereum"))
       );
     };
     getCryptoNames();
   }, []);
 
-  const getCryptoPrices = () => {
-    console.log("Clicked");
+  const getCryptoPrices = async () => {
+    if (crypto) {
+      let cryptoId = cryptoNames.filter((c) => c.name === crypto)[0].id;
+      const priceResponse = await axios.get(
+        "https:api.coingecko.com/api/v3/simple/price?ids=" +
+          cryptoId +
+          "&vs_currencies=usd%2Cbtc&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
+      );
+      setCoinPrices(priceResponse.data);
+    } else {
+      console.log("crypto undefined");
+    }
   };
 
   return (
@@ -44,7 +55,7 @@ function Search() {
               <Autocomplete
                 id="free-solo-demo"
                 freeSolo
-                options={cryptoNames}
+                options={cryptoNames.map((c) => c.name)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -53,6 +64,8 @@ function Search() {
                     variant="outlined"
                   />
                 )}
+                value={crypto}
+                onChange={(event, newValue) => setCrypto(newValue)}
               />
             </Grid>
             <Grid item xs={2}>
@@ -65,6 +78,20 @@ function Search() {
               </Button>
             </Grid>
           </Grid>
+          {coinPrices &&
+            Object.entries(coinPrices).map((p) => {
+              return Object.keys(p[1]).map((key, price) => {
+                return (
+                  <>
+                    <p key={key}>
+                      <span>{key}</span>
+                      <br />
+                      <span>{p[1][key]}</span>
+                    </p>
+                  </>
+                );
+              });
+            })}
         </>
       )}
     </div>
