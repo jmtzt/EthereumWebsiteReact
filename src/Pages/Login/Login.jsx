@@ -1,30 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './styles.module.css';
 import Button from '@material-ui/core/Button';
-import { TextField } from "@material-ui/core";
+import { TextField, CircularProgress } from "@material-ui/core";
 import EthLoginPage from "../../static/Figures/eth-login-page.png"
 import axios from 'axios';
-
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+import {useHistory} from 'react-router-dom';
+import {useStickyState} from '../../services/stickyState'
 
 
 const api = axios.create({
   baseURL: 'https://reqres.in/api'
 });
 
-
-
 function Login() {
 
+  let history = useHistory()
+  const notify = () => toast("Wrong Username/Password !");
+
+  const [localStorage, setLocalStorage] = useStickyState(0, "")
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+  const [onLoading, setOnloading] = useState(false)
+
+  useEffect(()=>{
+    const loggedUser = localStorage
+
+    if (loggedUser == "QpwL5tke4Pnpja7X4") {
+      history.push("/home")
+    }
+  }, [])
 
   const loginMethod = async () =>{
-    console.log("username", username)
+    setOnloading(true)
+
     await api.post('/login', {
       email: username,
       password: password
-    }).then(function (response) {
-      console.log(response);
+    })
+    .then(function (response) {
+      if(response){
+        
+        setLocalStorage(response.data.token)
+        history.push("/home")
+        setOnloading(false)
+      }
+    })
+    .catch(error=>{
+      notify()
+      setOnloading(false)
+      console.log("err", error)
     })
   }
   
@@ -44,10 +70,20 @@ function Login() {
             </div>
 
             <div className={styles.button}>
-              <Button variant="contained" color="secondary" onClick={loginMethod}>
-                Login
-              </Button>
+              {
+                onLoading ? <CircularProgress /> :  
+                  <Button variant="contained" color="secondary" onClick={loginMethod}>
+                    Login
+                  </Button>
+              }
+
+    
+             
             </div>
+
+            <ToastContainer
+              position="bottom-right"
+            />
 
         </div>
     </div>
