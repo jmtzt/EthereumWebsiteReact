@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import PriceTable from "../PriceTable/PriceTable";
 import axios from "axios";
 import "./styles.css";
 
@@ -18,14 +19,13 @@ function Search() {
       );
       // Removendo variacoes das cryptos que nao comecam com Ethereum
       setCryptoNames(
-        response.data
-          .map((c) => {
-            return {
-              name: c.symbol.toUpperCase() + " " + c.name,
-              id: c.id,
-            };
-          })
-          .filter((c) => c.name.split(" ")[1].startsWith("Ethereum"))
+        response.data.map((c) => {
+          return {
+            name: c.symbol.toUpperCase() + " " + c.name,
+            id: c.id,
+          };
+        })
+        // .filter((c) => c.name.split(" ")[1].startsWith("Ethereum"))
       );
     };
     getCryptoNames();
@@ -37,7 +37,7 @@ function Search() {
       const priceResponse = await axios.get(
         "https:api.coingecko.com/api/v3/simple/price?ids=" +
           cryptoId +
-          "&vs_currencies=usd%2Cbtc&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true&include_last_updated_at=true"
+          "&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"
       );
       setCoinPrices(priceResponse.data);
     } else {
@@ -78,20 +78,24 @@ function Search() {
               </Button>
             </Grid>
           </Grid>
-          {coinPrices &&
-            Object.entries(coinPrices).map((p) => {
-              return Object.keys(p[1]).map((key, price) => {
-                return (
-                  <>
-                    <p key={key}>
-                      <span>{key}</span>
-                      <br />
-                      <span>{p[1][key]}</span>
-                    </p>
-                  </>
-                );
-              });
-            })}
+          {
+            coinPrices && (
+              <PriceTable prices={Object.entries(coinPrices)[0][1]} />
+            )
+            // Object.entries(coinPrices).map((p) => {
+            //   return Object.keys(p[1]).map((key, price) => {
+            //     return (
+            //       <>
+            //         <p key={key}>
+            //           <span>{key}</span>
+            //           <br />
+            //           <span>{p[1][key]}</span>
+            //         </p>
+            //       </>
+            //     );
+            //   });
+            // })
+          }
         </>
       )}
     </div>
