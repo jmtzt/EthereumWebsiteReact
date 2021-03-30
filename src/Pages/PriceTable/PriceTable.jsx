@@ -13,34 +13,43 @@ function PriceTable({ prices }) {
     currency: "USD",
   });
 
+  var cryptoName = Object.keys(prices)[0];
+  var cryptoPrices = Object.entries(prices)[0][1];
+  var keysCryptoPrices = Object.keys(cryptoPrices);
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="price table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Currency</TableCell>
-            <TableCell align="right">Value</TableCell>
-            <TableCell align="right">Market Cap</TableCell>
-            <TableCell align="right">24h Volume</TableCell>
-            <TableCell align="right">24h Change </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell component="th" scope="row">
-              USD
-            </TableCell>
-            {Object.keys(prices).map((key, value) => (
-              <>
-                <TableCell align="right">
-                  {formatter.format(prices[key])}
-                </TableCell>
-              </>
-            ))}
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      <h1>Current price for {cryptoName}</h1>
+      <TableContainer component={Paper}>
+        <Table aria-label="price table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Currency</TableCell>
+              <TableCell align="right">Value</TableCell>
+              <TableCell align="right">Market Cap</TableCell>
+              <TableCell align="right">24h Volume</TableCell>
+              <TableCell align="right">24h Change </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell key={"USD"} component="th" scope="row">
+                USD
+              </TableCell>
+              {keysCryptoPrices.map((key, value) => (
+                <>
+                  <TableCell key={key} align="right">
+                    {key === "usd_24h_change"
+                      ? parseFloat(cryptoPrices[key]).toFixed(2) + "%"
+                      : formatter.format(cryptoPrices[key])}
+                  </TableCell>
+                </>
+              ))}
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 
