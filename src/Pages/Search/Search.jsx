@@ -48,7 +48,7 @@ function Search() {
       let cryptoId = cryptoNames.filter((c) => c.name === crypto)[0].id;
       try {
         const priceResponse = await axios.get(
-          "https:api.coingecko.com/api/v3/simple/price?ids=" +
+          "https://api.coingecko.com/api/v3/simple/price?ids=" +
             cryptoId +
             "&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"
         );
