@@ -26,6 +26,7 @@ function Login() {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [emailError, setEmailError] = useState()
+  const [errorMessage, setErrorMessage] = useState('')
   const [onLoading, setOnloading] = useState(false)
 
   useEffect(()=>{
@@ -42,9 +43,11 @@ function Login() {
     if(!emailRegex.test(username)){
       setEmailError(true)
       notifyEmailError()
+      setErrorMessage('Invalid Email Address!')
       setOnloading(false)
       return
     }
+   
 
     await api.post('/login', {
       email: username,
@@ -75,7 +78,7 @@ function Login() {
             </div>
 
             <div className={styles.inputs}>
-                <TextField error={emailError}    helperText="Invalid Email Address!" id="standard-basic" label="Username" value={username} onChange={(e)=> setUsername(e.target.value)} />
+                <TextField error={emailError}   helperText={errorMessage} id="standard-basic" label="Username" value={username} onChange={(e)=> setUsername(e.target.value)} />
                 <div className={styles.password}>
                   <TextField id="standard-basic" label="Password" type="password" value={password} onChange={(e)=> setPassword(e.target.value)}   style={{width:'100%'}}/>
                 </div>
