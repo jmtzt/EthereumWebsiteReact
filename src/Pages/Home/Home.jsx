@@ -6,10 +6,22 @@ import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import LanguageIcon from "@material-ui/icons/Language";
 import EthIconImg from "../../static/Figures/eth-home-icon.png";
 import EthMainImg from "../../static/Figures/hero.png";
+import Button from '@material-ui/core/Button';
+import {useHistory} from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ReorderIcon from "@material-ui/icons/Reorder";
 
+
 function Home() {
+  
+
+  function logoutMethod(){
+    localStorage.setItem('token', '')
+    console.log("token:",localStorage.getItem('token'))
+    history.push("/")
+  }
+  let history = useHistory()
+
   return (
     <>
       <div className="outer-center">
@@ -134,6 +146,12 @@ function Home() {
             </div>
 
             <div className="nav-right-container">
+              <div className="logout-container">
+                <Button variant="contained" color="primary" onClick={logoutMethod}>
+                  Logout
+                </Button>
+              </div>
+            
               <div className="search-div ">
                 <input
                   type="text"

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from './styles.module.css';
 import Button from '@material-ui/core/Button';
-import { TextField, CircularProgress } from "@material-ui/core";
 import EthLoginPage from "../../static/Figures/eth-login-page.png"
 import axios from 'axios';
-import {ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import {useHistory} from 'react-router-dom';
-import {useStickyState} from '../../services/stickyState'
+import {ToastContainer, toast} from 'react-toastify'
+import { TextField, CircularProgress } from "@material-ui/core";
+import classes from "./styles.module.css";
 
 
 const api = axios.create({
@@ -18,14 +18,18 @@ function Login() {
 
   let history = useHistory()
   const notify = () => toast("Wrong Username/Password !");
+  const loginSucceed = () => toast("Login Succeed!");
+  const notifyEmailError = () => toast("Invalid Email Address!")
 
-  const [localStorage, setLocalStorage] = useStickyState(0, "")
+  const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i
+
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+  const [emailError, setEmailError] = useState()
   const [onLoading, setOnloading] = useState(false)
 
   useEffect(()=>{
-    const loggedUser = localStorage
+    const loggedUser = localStorage.getItem('token')
 
     if (loggedUser == "QpwL5tke4Pnpja7X4") {
       history.push("/home")
@@ -35,14 +39,22 @@ function Login() {
   const loginMethod = async () =>{
     setOnloading(true)
 
+    if(!emailRegex.test(username)){
+      setEmailError(true)
+      notifyEmailError()
+      setOnloading(false)
+      return
+    }
+
     await api.post('/login', {
       email: username,
       password: password
     })
     .then(function (response) {
       if(response){
+        loginSucceed()
+        localStorage.setItem('token',response.data.token)
         
-        setLocalStorage(response.data.token)
         history.push("/home")
         setOnloading(false)
       }
@@ -63,9 +75,9 @@ function Login() {
             </div>
 
             <div className={styles.inputs}>
-                <TextField id="standard-basic" label="Username" value={username} onChange={(e)=> setUsername(e.target.value)} />
+                <TextField error={emailError}    helperText="Invalid Email Address!" id="standard-basic" label="Username" value={username} onChange={(e)=> setUsername(e.target.value)} />
                 <div className={styles.password}>
-                  <TextField id="standard-basic" label="Password" value={password} onChange={(e)=> setPassword(e.target.value)}   style={{width:'100%'}}/>
+                  <TextField id="standard-basic" label="Password" type="password" value={password} onChange={(e)=> setPassword(e.target.value)}   style={{width:'100%'}}/>
                 </div>
             </div>
 
@@ -76,9 +88,6 @@ function Login() {
                     Login
                   </Button>
               }
-
-    
-             
             </div>
 
             <ToastContainer
