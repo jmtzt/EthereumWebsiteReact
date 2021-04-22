@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Search from "../Search/Search";
 import "./styles.css";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -13,6 +13,15 @@ import ReorderIcon from "@material-ui/icons/Reorder";
 
 
 function Home() {
+  
+  useEffect( ()=>{
+    let token = localStorage.getItem('token')
+
+    if(token != 'QpwL5tke4Pnpja7X4'){
+      history.push("/")
+    }
+  },[])
+
   
 
   function logoutMethod(){
