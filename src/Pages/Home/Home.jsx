@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Search from "../Search/Search";
-import "./styles.css";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -10,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import {useHistory} from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ReorderIcon from "@material-ui/icons/Reorder";
-
+import "./styles.css";
 
 function Home() {
   
@@ -22,13 +21,12 @@ function Home() {
     }
   },[])
 
-  
-
   function logoutMethod(){
     localStorage.setItem('token', '')
     console.log("token:",localStorage.getItem('token'))
     history.push("/")
   }
+  
   let history = useHistory()
 
   return (

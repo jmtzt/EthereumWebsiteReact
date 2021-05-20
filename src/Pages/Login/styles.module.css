@@ -47,4 +47,10 @@
 
 .button{
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
 } 
+
+.signup{
+    padding-top: 20px;
+}

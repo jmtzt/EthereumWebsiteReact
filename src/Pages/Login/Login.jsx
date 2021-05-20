@@ -8,6 +8,7 @@ import {useHistory} from 'react-router-dom';
 import {ToastContainer, toast} from 'react-toastify'
 import { TextField, CircularProgress } from "@material-ui/core";
 import classes from "./styles.module.css";
+//import api_heroku from '~/services/api_heroku'
 
 
 const api = axios.create({
@@ -28,6 +29,7 @@ function Login() {
   const [emailError, setEmailError] = useState()
   const [errorMessage, setErrorMessage] = useState('')
   const [onLoading, setOnloading] = useState(false)
+  const [hideLogin, setHideLogin] = useState(false)
 
   useEffect(()=>{
     const loggedUser = localStorage.getItem('token')
@@ -48,7 +50,6 @@ function Login() {
       return
     }
    
-
     await api.post('/login', {
       email: username,
       password: password
@@ -66,6 +67,15 @@ function Login() {
       notify()
       setOnloading(false)
       console.log("err", error)
+    })
+  }
+
+  const signUp = async () =>{
+    setHideLogin(true)
+    api.post('/post', {
+      email:username,
+      password: password,
+      type: "normal"
     })
   }
   
@@ -88,9 +98,17 @@ function Login() {
               {
                 onLoading ? <CircularProgress /> :  
                   <Button variant="contained" color="secondary" onClick={loginMethod}>
-                    Login
+                    {
+                      hideLogin ? "" : "Login"
+                    }
+                    
                   </Button>
               }
+                <div className={styles.signup}  onClick={signUp}> 
+                  <Button variant="contained" color="secondary" >
+                    Signup
+                  </Button>
+                </div>
             </div>
 
             <ToastContainer
