@@ -46,7 +46,7 @@ function Signup() {
     }
     
     try{
-      const response = User.newUser()
+      const response = User.newUser(username, password, userType)
       toast(response)
       setOnloading(false)
     }catch (error){

@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Search from "../Search/Search";
+import CreateCoin from "../CreateCoin/CreateCoin"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -9,15 +10,22 @@ import Button from '@material-ui/core/Button';
 import {useHistory} from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ReorderIcon from "@material-ui/icons/Reorder";
+import Coin from '../../services/CoinService'
 import "./styles.css";
 
 function Home() {
-  
+  const [showAddCoin, setshowAddCoin] = useState(false)
+
   useEffect( ()=>{
     let token = localStorage.getItem('token')
 
     if(token != ''){
-      
+      const userType =  localStorage.getItem('userType')
+      if(userType.toUpperCase() == 'ADMIN'){
+        setshowAddCoin(true)
+      }else{
+        setshowAddCoin(true)
+      }
     }else{
       history.push("/")
     }
@@ -27,6 +35,15 @@ function Home() {
     localStorage.setItem('token', '')
     console.log("token:",localStorage.getItem('token'))
     history.push("/")
+  }
+
+  const newCoin = ()=>{
+    try{
+      
+    }catch(error){
+
+    }
+
   }
   
   let history = useHistory()
@@ -158,17 +175,9 @@ function Home() {
 
             <div className="nav-right-container">
               <div className="logout-container">
-                {
-                  <Button variant="contained" color="primary" onClick={logoutMethod}>
-                    AddCoin
-                  </Button>
-                }
-                <div className="add-coin">
                   <Button variant="contained" color="primary" onClick={logoutMethod} style={{paddingRight:20}}>
                     Logout
                   </Button>
-                </div>
-              
               </div>
             
               <div className="search-div ">
@@ -217,6 +226,14 @@ function Home() {
           </div>
         </div>
         <Search />
+        {
+              showAddCoin ? 
+                <CreateCoin/>
+              :
+              <>
+              </>
+        }
+
       </div>
     </>
   );

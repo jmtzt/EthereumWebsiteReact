@@ -4,22 +4,24 @@ class Coin{
     static async getAllCrypto(){
         const token = localStorage.getItem('token')
         
-        await api.get("listings/", {
+        return await api.get("listings/", {
             headers:{
                 'Authorization': `Bearer ${token}`
             }
         })
         .then(response => {
+            console.log("response", response.data.listings)
             return response
         })
         .catch(error =>{
+            console.log("2")
             throw error
         })
     }
 
     static async createCrypto(payload){
         const token = localStorage.getItem('token')
-        const url = AUTHORIZER_URL + '/login'
+        
         await api.post("listings/",payload, {
             headers:{
                 'Authorization': `Bearer ${token}`
@@ -49,7 +51,7 @@ class Coin{
         })
     }
 
-    static async patchCrypto(payload){
+    static async patchCrypto(payload, id){
         const token = localStorage.getItem('token')
         const url = `listings/${id}`
 

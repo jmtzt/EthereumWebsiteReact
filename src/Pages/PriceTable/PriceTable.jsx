@@ -13,22 +13,20 @@ function PriceTable({ prices }) {
     currency: "USD",
   });
 
-  var cryptoName = Object.keys(prices)[0];
+  var cryptoName = Object.keys(prices.name)[0];
   var cryptoPrices = Object.entries(prices)[0][1];
   var keysCryptoPrices = Object.keys(cryptoPrices);
 
   return (
     <>
-      <h1>Current price for {cryptoName}</h1>
+      <h1>Current price for {prices.name}</h1>
       <TableContainer component={Paper}>
         <Table aria-label="price table">
           <TableHead>
             <TableRow>
               <TableCell>Currency</TableCell>
               <TableCell align="right">Value</TableCell>
-              <TableCell align="right">Market Cap</TableCell>
-              <TableCell align="right">24h Volume</TableCell>
-              <TableCell align="right">24h Change </TableCell>
+              <TableCell align="right">Creator</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -36,7 +34,9 @@ function PriceTable({ prices }) {
               <TableCell key={"USD"} component="th" scope="row">
                 USD
               </TableCell>
-              {keysCryptoPrices.map((key, value) => (
+              {
+                console.log("Crypto",prices )
+              /* keysCryptoPrices.map((key, value) => (
                 <>
                   <TableCell key={key} align="right">
                     {key === "usd_24h_change"
@@ -44,7 +44,14 @@ function PriceTable({ prices }) {
                       : formatter.format(cryptoPrices[key])}
                   </TableCell>
                 </>
-              ))}
+              )) */}
+                <TableCell key={"value"} align="right">
+                  {prices.price}
+                </TableCell>
+
+                <TableCell key={"author"} align="right">
+                  {prices.author}
+                </TableCell>
             </TableRow>
           </TableBody>
         </Table>

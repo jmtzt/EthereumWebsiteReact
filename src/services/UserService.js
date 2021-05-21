@@ -7,7 +7,7 @@ const api = axios.create({
 });
 class User{ 
 
-    static async newUser(username, password){
+    static async newUser(username, password, type){
         //const token = localStorage.getItem('token')
         const url = 'http://localhost:8000/' + AUTHORIZER_URL + '/signup'
         console.log(url)
@@ -15,7 +15,7 @@ class User{
         return await api.post(url, {
             email:username,
             password: password,
-            type: "normal",
+            type: type,
           })
           .then(response =>{
               return response
@@ -53,6 +53,7 @@ class User{
       .then( (response) => {
           console.log("response:", response)
           localStorage.setItem('userType',response.data.type)
+          localStorage.setItem('userEmail', response.data.email)
           return
       })
       .catch(error=>{
