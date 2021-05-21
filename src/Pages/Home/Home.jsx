@@ -16,7 +16,9 @@ function Home() {
   useEffect( ()=>{
     let token = localStorage.getItem('token')
 
-    if(token != 'QpwL5tke4Pnpja7X4'){
+    if(token != ''){
+      
+    }else{
       history.push("/")
     }
   },[])
@@ -145,6 +147,8 @@ function Home() {
                 </div>
               </li>
             </ul>
+
+           
           </div>
           <div className="nav-right">
             <div className="nav-right-smartphone">
@@ -154,9 +158,17 @@ function Home() {
 
             <div className="nav-right-container">
               <div className="logout-container">
-                <Button variant="contained" color="primary" onClick={logoutMethod}>
-                  Logout
-                </Button>
+                {
+                  <Button variant="contained" color="primary" onClick={logoutMethod}>
+                    AddCoin
+                  </Button>
+                }
+                <div className="add-coin">
+                  <Button variant="contained" color="primary" onClick={logoutMethod} style={{paddingRight:20}}>
+                    Logout
+                  </Button>
+                </div>
+              
               </div>
             
               <div className="search-div ">

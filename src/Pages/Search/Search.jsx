@@ -36,7 +36,7 @@ function Search() {
           //.filter((c) => c.name.split(" ")[1].startsWith("Ethereum"))
         );
       } catch (err) {
-        noCryptoList();
+        //noCryptoList();
       }
     };
     getCryptoNames();

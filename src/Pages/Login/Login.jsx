@@ -8,13 +8,7 @@ import {useHistory} from 'react-router-dom';
 import {ToastContainer, toast} from 'react-toastify'
 import { TextField, CircularProgress } from "@material-ui/core";
 import User from "../../services/UserService"
-import classes from "./styles.module.css";
-//import api_heroku from '~/services/api_heroku'
 
-
-const api = axios.create({
-  baseURL: 'https://reqres.in/api'
-});
 
 function Login() {
 
@@ -52,32 +46,16 @@ function Login() {
    
     try{
       User.login(username, password)
-      loginSucceed()
-      history.push("/home")
-      setOnloading(false)
+      .then(()=>{
+        loginSucceed()
+        history.push("/home")
+        setOnloading(false)
+      })
       
     }catch{
       notify()
       setOnloading(false)
     }
-    await api.post('/login', {
-      email: username,
-      password: password
-    })
-    .then(function (response) {
-      if(response){
-        loginSucceed()
-        localStorage.setItem('token',response.data.token)
-        
-        history.push("/home")
-        setOnloading(false)
-      }
-    })
-    .catch(error=>{
-      notify()
-      setOnloading(false)
-      console.log("err", error)
-    })
   }
 
   const signUp = async () =>{
@@ -86,7 +64,6 @@ function Login() {
     setOnloading(false)
   }
   
-
   return (
     <div className={styles.container}>
         <div className={styles.content}> 
@@ -109,8 +86,8 @@ function Login() {
                     Login
                   </Button>
 
-                  <div className={styles.signup}  onClick={signUp}> 
-                    <Button variant="contained" color="secondary" >
+                  <div className={styles.signup} > 
+                    <Button variant="contained" color="secondary" onClick={signUp} >
                       Signup
                     </Button>
                   </div>

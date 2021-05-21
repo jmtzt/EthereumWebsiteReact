@@ -114,7 +114,14 @@
 }
 
 .logout-container{
-  margin-right: 10px;
+ 
+  display: flex;
+  flex-direction: row;
+
+}
+
+.add-coin{
+  padding-left: 10px;
 }
 
 .nav-child-right {

@@ -1,4 +1,4 @@
-import api from './api_heroku'
+import api from './api'
 
 class Coin{
     static async getAllCrypto(){
