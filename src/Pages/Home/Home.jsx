@@ -21,11 +21,14 @@ function Home() {
     if(token != ''){
       const userType =  localStorage.getItem('userType')
       console.log(userType)
-      if(userType.toUpperCase() == 'ADMIN'){
-        setshowAddCoin(true)
-      }else{
-        setshowAddCoin(false)
+      if(userType != null){
+        if(userType.toUpperCase() == 'ADMIN'){
+          setshowAddCoin(true)
+        }else{
+          setshowAddCoin(false)
+        }
       }
+      
     }else{
       history.push("/")
     }
