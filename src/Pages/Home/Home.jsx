@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Search from "../Search/Search";
-import "./styles.css";
+import CreateCoin from "../CreateCoin/CreateCoin"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -10,25 +10,42 @@ import Button from '@material-ui/core/Button';
 import {useHistory} from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ReorderIcon from "@material-ui/icons/Reorder";
-
+import "./styles.css";
 
 function Home() {
-  
+  const [showAddCoin, setshowAddCoin] = useState(false)
+
   useEffect( ()=>{
     let token = localStorage.getItem('token')
 
-    if(token != 'QpwL5tke4Pnpja7X4'){
+    if(token != ''){
+      const userType =  localStorage.getItem('userType')
+      console.log(userType)
+      if(userType.toUpperCase() == 'ADMIN'){
+        setshowAddCoin(true)
+      }else{
+        setshowAddCoin(false)
+      }
+    }else{
       history.push("/")
     }
   },[])
-
-  
 
   function logoutMethod(){
     localStorage.setItem('token', '')
     console.log("token:",localStorage.getItem('token'))
     history.push("/")
   }
+
+  const newCoin = ()=>{
+    try{
+      
+    }catch(error){
+
+    }
+
+  }
+  
   let history = useHistory()
 
   return (
@@ -147,6 +164,8 @@ function Home() {
                 </div>
               </li>
             </ul>
+
+           
           </div>
           <div className="nav-right">
             <div className="nav-right-smartphone">
@@ -156,9 +175,9 @@ function Home() {
 
             <div className="nav-right-container">
               <div className="logout-container">
-                <Button variant="contained" color="primary" onClick={logoutMethod}>
-                  Logout
-                </Button>
+                  <Button variant="contained" color="primary" onClick={logoutMethod} style={{paddingRight:20}}>
+                    Logout
+                  </Button>
               </div>
             
               <div className="search-div ">
@@ -207,6 +226,14 @@ function Home() {
           </div>
         </div>
         <Search />
+        {
+              showAddCoin ? 
+                <CreateCoin/>
+              :
+              <>
+              </>
+        }
+
       </div>
     </>
   );

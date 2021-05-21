@@ -9,6 +9,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles.css";
+import Coin from "../../services/CoinService"
 
 function Search() {
   const [cryptoNames, setCryptoNames] = useState([]);
@@ -23,23 +24,25 @@ function Search() {
   useEffect(() => {
     const getCryptoNames = async () => {
       try {
-        const response = await axios.get(
-          "https://api.coingecko.com/api/v3/coins/list?include_platform=false"
-        );
+        const response = await Coin.getAllCrypto()
+  
         setCryptoNames(
-          response.data.map((c) => {
+          response.data.listings.map((c) => {
             return {
-              name: c.symbol.toUpperCase() + " " + c.name,
-              id: c.id,
+              name: c.cryptoName.toUpperCase(),
+              id: c._id,
+              price: c.price,
+              author: c.author
             };
           })
-          //.filter((c) => c.name.split(" ")[1].startsWith("Ethereum"))
         );
+        
       } catch (err) {
-        noCryptoList();
+        console.log(err)
       }
     };
     getCryptoNames();
+   
   }, []);
 
   const getCryptoPrices = async () => {
@@ -47,12 +50,14 @@ function Search() {
     if (crypto) {
       let cryptoId = cryptoNames.filter((c) => c.name === crypto)[0].id;
       try {
-        const priceResponse = await axios.get(
-          "https://api.coingecko.com/api/v3/simple/price?ids=" +
-            cryptoId +
-            "&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"
-        );
-        setCoinPrices(priceResponse.data);
+        
+        cryptoNames.map((c)=>{
+          if(c.name == crypto){
+            console.log("crypto", c)
+            setCoinPrices(c);
+          }
+        }) 
+        
       } catch (err) {
         noCryptoResponse();
       }
