@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Search from "../Search/Search";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";

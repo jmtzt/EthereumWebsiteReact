@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {useHistory} from 'react-router-dom';
 import {ToastContainer, toast} from 'react-toastify'
 import { TextField, CircularProgress } from "@material-ui/core";
+import User from "../../services/UserService"
 import classes from "./styles.module.css";
 //import api_heroku from '~/services/api_heroku'
 
@@ -29,12 +30,11 @@ function Login() {
   const [emailError, setEmailError] = useState()
   const [errorMessage, setErrorMessage] = useState('')
   const [onLoading, setOnloading] = useState(false)
-  const [hideLogin, setHideLogin] = useState(false)
 
   useEffect(()=>{
     const loggedUser = localStorage.getItem('token')
 
-    if (loggedUser == "QpwL5tke4Pnpja7X4") {
+    if (loggedUser) {
       history.push("/home")
     }
   }, [])
@@ -50,6 +50,16 @@ function Login() {
       return
     }
    
+    try{
+      User.login(username, password)
+      loginSucceed()
+      history.push("/home")
+      setOnloading(false)
+      
+    }catch{
+      notify()
+      setOnloading(false)
+    }
     await api.post('/login', {
       email: username,
       password: password
@@ -71,12 +81,9 @@ function Login() {
   }
 
   const signUp = async () =>{
-    setHideLogin(true)
-    api.post('/post', {
-      email:username,
-      password: password,
-      type: "normal"
-    })
+    setOnloading(true)
+    history.push("/signup")
+    setOnloading(false)
   }
   
 
@@ -97,18 +104,20 @@ function Login() {
             <div className={styles.button}>
               {
                 onLoading ? <CircularProgress /> :  
+                <>
                   <Button variant="contained" color="secondary" onClick={loginMethod}>
-                    {
-                      hideLogin ? "" : "Login"
-                    }
-                    
+                    Login
                   </Button>
+
+                  <div className={styles.signup}  onClick={signUp}> 
+                    <Button variant="contained" color="secondary" >
+                      Signup
+                    </Button>
+                  </div>
+
+                </>
               }
-                <div className={styles.signup}  onClick={signUp}> 
-                  <Button variant="contained" color="secondary" >
-                    Signup
-                  </Button>
-                </div>
+                
             </div>
 
             <ToastContainer
