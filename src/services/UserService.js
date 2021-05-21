@@ -1,17 +1,12 @@
-//import api from './api'
-import axios from 'axios'
+import api from './api'
+
 const AUTHORIZER_URL = "auth"
 
-const api = axios.create({
-  baseUrl: 'http://localhost:8000/'
-});
 class User{ 
 
     static async newUser(username, password, type){
-        //const token = localStorage.getItem('token')
-        const url = 'http://localhost:8000/' + AUTHORIZER_URL + '/signup'
-        console.log(url)
-        
+        const url =  AUTHORIZER_URL + '/signup'
+
         return await api.post(url, {
             email:username,
             password: password,
@@ -26,10 +21,10 @@ class User{
     }
 
     static async login(username, password){
-      const url = 'http://localhost:8000/' + AUTHORIZER_URL + '/login'
+      const url = AUTHORIZER_URL + '/login'
       
       await this.getUser(username)
-      console.log("Voltei para o login")
+
       return await api.post(url, {
           email: username,
           password: password
@@ -45,8 +40,8 @@ class User{
     }
 
     static async getUser(username){
-      const url = 'http://localhost:8000/' + AUTHORIZER_URL + '/getUser'
-      console.log("username", username)
+      const url = AUTHORIZER_URL + '/getUser'
+
       return await api.post(url, {
         email: username,
       })

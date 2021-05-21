@@ -10,7 +10,6 @@ import Button from '@material-ui/core/Button';
 import {useHistory} from 'react-router-dom';
 import SearchIcon from "@material-ui/icons/Search";
 import ReorderIcon from "@material-ui/icons/Reorder";
-import Coin from '../../services/CoinService'
 import "./styles.css";
 
 function Home() {
@@ -21,10 +20,11 @@ function Home() {
 
     if(token != ''){
       const userType =  localStorage.getItem('userType')
+      console.log(userType)
       if(userType.toUpperCase() == 'ADMIN'){
         setshowAddCoin(true)
       }else{
-        setshowAddCoin(true)
+        setshowAddCoin(false)
       }
     }else{
       history.push("/")

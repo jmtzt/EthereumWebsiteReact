@@ -11,7 +11,6 @@ function CreateCoin() {
     const [coin, setCoin] = useState()
     const [price, setPrice] = useState()
     const [coinError, setCoinError] = useState(false)
-    const [priceError, setPriceError] = useState(false)
 
 
     const addCoin = () =>{
@@ -25,10 +24,8 @@ function CreateCoin() {
             console.log(payload)
             Coin.createCrypto(payload)
                 .then(response =>{
-                    
                     toast("New crypto added!")
                     return
-
                 })
                 .catch(error =>{
                     toast("An error Ocurred...")
@@ -41,14 +38,11 @@ function CreateCoin() {
             <div className="inputs">
                 <TextField error={coinError}  id="filled-error" color="primary" helperText={coinError} id="standard-basic" label="Coin Name" value={coin} onChange={(e)=> setCoin(e.target.value)} />
                
-              {/*   <CurrencyTextField variant="filled"  error={priceError} currencySymbol="$"  id="filled-error" color="primary"  helperText={priceError} id="standard-basic" label="Price" value={price} onChange={(e)=> setPrice(e.target.value)} /> */}
                 <CurrencyTextField
                     label="Price"
                     color="primary"
-                   
                     onChange={(e)=> setPrice(e.target.value)}
                     currencySymbol="$"
-			
 		        />
             </div>
            

@@ -25,12 +25,9 @@ function Search() {
     const getCryptoNames = async () => {
       try {
         const response = await Coin.getAllCrypto()
-          
-        console.log("response2", response.data)
   
         setCryptoNames(
           response.data.listings.map((c) => {
-            console.log("c", c)
             return {
               name: c.cryptoName.toUpperCase(),
               id: c._id,

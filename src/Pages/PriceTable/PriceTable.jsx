@@ -34,17 +34,6 @@ function PriceTable({ prices }) {
               <TableCell key={"USD"} component="th" scope="row">
                 USD
               </TableCell>
-              {
-                console.log("Crypto",prices )
-              /* keysCryptoPrices.map((key, value) => (
-                <>
-                  <TableCell key={key} align="right">
-                    {key === "usd_24h_change"
-                      ? parseFloat(cryptoPrices[key]).toFixed(2) + "%"
-                      : formatter.format(cryptoPrices[key])}
-                  </TableCell>
-                </>
-              )) */}
                 <TableCell key={"value"} align="right">
                   {prices.price}
                 </TableCell>
