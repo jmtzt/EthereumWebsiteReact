@@ -19,7 +19,7 @@ class Coin{
         })
     }
 
-    static async createCrypto(payload){
+    static async createCrypto(payload, file){
         const token = localStorage.getItem('token')
         
         await api.post("listings/",payload, {

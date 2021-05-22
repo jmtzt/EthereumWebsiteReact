@@ -11,18 +11,27 @@ function CreateCoin() {
     const [coin, setCoin] = useState()
     const [price, setPrice] = useState()
     const [coinError, setCoinError] = useState(false)
+    const [fileState, setFileState] = useState(null)
 
+    const handleFile = (e)=>{
+        let file = e.target.files[0]
+        console.log(file)
+        setFileState(file)
+    }
 
     const addCoin = () =>{
-        
             const author = localStorage.getItem('userEmail')
-            let payload = {
-                cryptoName: coin,
-                price: price,
-                author: author
-            } 
-            console.log(payload)
-            Coin.createCrypto(payload)
+            let formData = new FormData()
+
+            formData.append('cryptoName', coin)
+            formData.append('price', price)
+            formData.append('author', author)
+            if(fileState){
+                formData.append('coinImage', fileState)
+            }
+        
+           
+            Coin.createCrypto(formData)
                 .then(response =>{
                     toast("New crypto added!")
                     return
@@ -44,6 +53,9 @@ function CreateCoin() {
                     onChange={(e)=> setPrice(e.target.value)}
                     currencySymbol="$"
 		        />
+
+                <label>Select File</label>
+                <input type="file" name="file" onChange={(e) => handleFile(e)}></input>
             </div>
            
             <div className="button" > 
